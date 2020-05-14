@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="IRIS" version="26" zv="IRIS for UNIX (Ubuntu Server LTS for x86-64 Containers) 2020.1 (Build 199U)" ts="2020-05-14 07:04:33">
+<Class name="MockFW.Mocks.Restaurant">
+<ProcedureBlock>1</ProcedureBlock>
+<Super>MockFW.MockBase</Super>
+<TimeChanged>65513,25344.419062</TimeChanged>
+<TimeCreated>65513,25344.408245</TimeCreated>
+
+<Method name="%DispatchClassMethod">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>Class:%String,methodName:%String,Args...</FormalSpec>
+<Implementation><![CDATA[
+  set mockName = $PIECE(Class,".",3) 
+  quit ##class(MockFW.MockBase).MethodCalled(mockName, methodName, Args...)
+]]></Implementation>
+</Method>
+
+<Method name="%DispatchMethod">
+<FormalSpec>methodName:%String,Args...</FormalSpec>
+<Implementation><![CDATA[
+  set mockName = $PIECE($CLASSNAME(),".",3) 
+  quit ##class(MockFW.MockBase).MethodCalled(mockName, methodName, Args...)
+]]></Implementation>
+</Method>
+
+<Method name="SaveMethod">
+<ClassMethod>1</ClassMethod>
+<FormalSpec>methodName:%String,params,return,restMethod:%String="",code=200,delay=0,force=0</FormalSpec>
+<ReturnType>%Status</ReturnType>
+<Implementation><![CDATA[
+  set mockName = $PIECE($CLASSNAME(),".",3) 
+  do ##super(mockName, methodName, params, return, restMethod, code, delay, force)
+]]></Implementation>
+</Method>
+</Class>
+</Export>
