@@ -1,0 +1,15 @@
+version: '3'
+services:
+  iris:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    container_name: onlymock
+    ports: 
+      - "9091:51773"
+      - "9092:52773"
+    volumes:
+      - ./Export:/opt/mockfw/export
+    
+    
