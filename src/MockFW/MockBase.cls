@@ -5,6 +5,7 @@ Class MockFW.MockBase Extends (%RegisteredObject, MockFW.Utils, %SYSTEM.Event)
 ClassMethod SaveMethod(mockName, methodName As %String, params, response, restMethod As %String = "", code = 200, delay = 0, force = 0) As %Status
 {
 
+
 	if (params="") {
 		set params= "NONE"
 	}
@@ -14,7 +15,7 @@ ClassMethod SaveMethod(mockName, methodName As %String, params, response, restMe
 	}
 
 	if (mockName="") || (methodName="") || (response="") {
-		w !, "ERROR: One of the compulsory parameters is missing."
+		write !, "ERROR: One of the compulsory parameters is missing."
 		quit '$$$OK
 	}
 
@@ -27,33 +28,33 @@ ClassMethod SaveMethod(mockName, methodName As %String, params, response, restMe
 		set response = response.%ToJSON()
 	}
 	
-	if (restMethod="") {
+	if (restMethod="") { // save local method
 		if 'force {
 			if ($DATA(^MockMat(mockName, methodName, params))) {
-					w !, "ERROR: The record with same parameters already exists."
+					write !, "ERROR: The record with same parameters already exists."
 					quit '$$$OK
 			} 
 			set tSC = ..GetMockedResponse(mockName, methodName, params, .res)
 			if (tSC=1) {
-				w !, "ERROR: The record with same parameters already exists."
+				write !, "ERROR: The record with same parameters already exists."
 				quit '$$$OK
 			}
 		}
 		
 		set ^MockMat(mockName, methodName, params) = response
 
-		w "Method ", methodName, " was succesfully saved to mock ", mockName, "!", !
+		write "Method ", methodName, " was succesfully saved to mock ", mockName, "!", !
 		
-	} else {
+	} else { //save endpoint
 		
 		if 'force {
 			if ($DATA(^MockMat(mockName, methodName, restMethod, params))) {
-					w !, "ERROR: The record with same parameters already exists."
+					write !, "ERROR: The record with same parameters already exists."
 					quit '$$$OK
 			} 
 			set tSC = ..GetMockedResponseREST(mockName, methodName, restMethod, params, .res) 
 			if (tSC=1) {
-				w !, "ERROR: The record with same parameters already exists."
+				write !, "ERROR: The record with same parameters already exists."
 				quit '$$$OK
 			}
 		}
@@ -62,7 +63,7 @@ ClassMethod SaveMethod(mockName, methodName As %String, params, response, restMe
 			set check = {}.%FromJSON(params)
 		} catch errobj {
 			if params'="NONE" {
-				w "WARNING: The body of the request is not valid JSON...  "
+				write "WARNING: The body of the request is not valid JSON...  "
 			}
 		}
 
@@ -70,7 +71,7 @@ ClassMethod SaveMethod(mockName, methodName As %String, params, response, restMe
 		set ^MockMat(mockName, methodName, restMethod, params, "code") = code
 		set ^MockMat(mockName, methodName, restMethod, params, "delay") = delay
 
-		w "Method ", restMethod, " with url ", methodName, " was succesfully saved to mock ", mockName, "!", ! 
+		write "Method ", restMethod, " with url ", methodName, " was succesfully saved to mock ", mockName, "!", ! 
 
 
 	}
@@ -106,7 +107,7 @@ ClassMethod GetMockedResponse(mockName As %String, methodName As %String, params
      		set response = ^MockMat(mockName, methodName, key)
      		return $$$OK
      	}
-     	s key = $Order(^MockMat(mockName, methodName, key)) // next subscript
+     	set key = $Order(^MockMat(mockName, methodName, key)) // next subscript
  	}
  	if $Data(^MockMat(mockName, methodName, "DEFAULT")) {
  		set response = ^MockMat(mockName, methodName, "DEFAULT")
@@ -134,7 +135,7 @@ ClassMethod GetMockedResponseREST(mockName As %String, methodName As %String, me
 			hang delay
      		return $$$OK
      	}
-     	s key = $Order(^MockMat(mockName, methodName, method,key)) // next subscript
+     	set key = $Order(^MockMat(mockName, methodName, method,key)) // next subscript
  	}
  	if $Data(^MockMat(mockName, methodName, method, "DEFAULT")) {
  		set response = ^MockMat(mockName, methodName, method, "DEFAULT")

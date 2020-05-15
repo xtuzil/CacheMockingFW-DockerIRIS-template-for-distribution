@@ -39,9 +39,6 @@ ClassMethod Compare(savedObject, params) As %Integer
 		return 1
 	}
 
-	w savedObject, !
-	w params, !
-		
 	try { // try transform string to object
 		if ('$ISOBJECT(savedObject)) {
 			set savedObject={}.%FromJSON(savedObject)
@@ -134,7 +131,7 @@ ClassMethod CompareArrays(saved, params) As %Status
 }
 
 /// Return '1' if the string can be transformed to the object, else '0'
-/// Use regex syntax. Work right only for two layers of json object 
+/// Use regex syntax. Work right only for 2-3 layers of json object 
 ClassMethod CanConvertToJSON(json) As %Integer
 {
 	set jsonWithoutSpaces = $ZSTRIP(json,"*W")
