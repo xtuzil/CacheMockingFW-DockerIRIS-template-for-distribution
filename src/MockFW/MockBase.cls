@@ -91,6 +91,7 @@ ClassMethod MethodCalled(class As %String, methodName As %String, Args...) As %S
 		set params = params.%ToJSON()
 	}
 	
+
 	set sc = ..GetMockedResponse(class, methodName, params, .response)
 	
 	return response
@@ -100,6 +101,11 @@ ClassMethod MethodCalled(class As %String, methodName As %String, Args...) As %S
 ClassMethod GetMockedResponse(mockName As %String, methodName As %String, params, Output response) As %Status
 {
 	set response=""
+	
+	if (params="") {
+		set params = "NONE"
+	}
+
 	set key = $Order(^MockMat(mockName, methodName,""))
  	while (key '= "") {
      	set sc = ..Compare(key, params)

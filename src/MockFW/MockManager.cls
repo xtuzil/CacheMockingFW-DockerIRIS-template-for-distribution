@@ -211,7 +211,7 @@ ClassMethod GenerateDocumentation(mockName As %String, dirPath As %String, inCon
 	}
 	set filePath = filePath_mockName_"Doc.xml"
 
-	write "Generating documentation of the mock ", mockName, " to do ", filePath, !
+	write "Generating documentation of the mock ", mockName, " to specified path",!
 
 	set file=##class(%File).%New(filePath)
 	do file.Open("WSN")
@@ -229,7 +229,7 @@ ClassMethod GenerateDocumentation(mockName As %String, dirPath As %String, inCon
 	
 	
 	do file.WriteLine($$$TAB_"<chapter>")
-	do file.WriteLine(..Tabs(2)_"<title>ZK.Mocks."_mockName_"</title>")
+	do file.WriteLine(..Tabs(2)_"<title>MockFW.Mocks."_mockName_"</title>")
 	
 
 	// first local mocked methods
