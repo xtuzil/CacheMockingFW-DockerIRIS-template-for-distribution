@@ -127,7 +127,7 @@ ClassMethod GetMockedResponseREST(mockName As %String, methodName As %String, me
 {
 	set response=""
 
-	if ((body.%ToJSON())="{}") {
+	if ((body'="DEFAULT") && ((body.%ToJSON())="{}")) {
 		set body = "NONE"
 	}
 
